@@ -7,8 +7,12 @@ from scipy.signal import butter, filtfilt
 from streamlit_folium import st_folium
 from math import radians, cos, sin, asin, sqrt
 
-df_gps =pd.read_csv('./My Experiment1/Location.csv')
-df_acc = pd.read_csv('./My Experiment1/Linear Acceleration.csv')
+
+url_gps = "https://raw.githubusercontent.com/jasa89/fysiikanlopputy-/refs/heads/main/My%20Experiment1/Location.csv"
+url_acc = "https://raw.githubusercontent.com/jasa89/fysiikanlopputy-/refs/heads/main/My%20Experiment1/Linear%20Acceleration.csv"
+
+df_gps =pd.read_csv(url_gps)
+df_acc = pd.read_csv(url_acc)
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=3):
     nyq = 0.5 * fs
@@ -63,10 +67,8 @@ df_gps['Total_distance_km'] = df_gps['Distance_km'].cumsum()
 total_distance_m = df_gps['Total_distance_km'].iloc[-1] * 1000
 
 steps_dt, t, data, data_filt = calculate_steps(df_acc)
-steps_ftt, dominant_freq, freq_vals, psd_vals, freq_vals = calculate_steps_ftt(df_acc)
+steps_ftt, dominant_freq, fourier_vals, psd_vals, freq_vals = calculate_steps_ftt(df_acc)
 step_length = total_distance_m / steps_dt if steps_dt > 0 else np.nan
-
-#url ="" # lisätään urli kun laitetaan nettiin
 
 
 st.header("Päivän kävelymatka")
